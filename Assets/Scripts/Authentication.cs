@@ -3,6 +3,9 @@ using Unity.Services.Core;
 using Unity.Services.Authentication;
 using System.Threading.Tasks;
 using Unity.Services.Lobbies;
+using UnityEngine.SceneManagement;
+
+
 
 public class Authentication : MonoBehaviour
 {
@@ -14,7 +17,7 @@ public class Authentication : MonoBehaviour
         
         SetupEvents();
         await SignInAnonymouslyAsync();
-        CreateLobby();
+        //CreateLobby();
     }
 
     void SetupEvents() {
@@ -49,7 +52,8 @@ public class Authentication : MonoBehaviour
             Debug.Log("Sign in anonymously succeeded!");
         
             // Shows how to get the playerID
-            Debug.Log($"PlayerID: {AuthenticationService.Instance.PlayerId}"); 
+            Debug.Log($"PlayerID: {AuthenticationService.Instance.PlayerId}");
+            SceneManager.LoadScene("Sandbox");
 
         }
         catch (AuthenticationException ex)

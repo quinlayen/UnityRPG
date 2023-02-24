@@ -1,22 +1,26 @@
+using System;
 using UnityEngine;
 using Unity.Services.Core;
 using Unity.Services.Authentication;
 using System.Threading.Tasks;
+using System.Collections.Generic;
 using Unity.Services.Lobbies;
+using Unity.Services.CloudSave;
 using UnityEngine.SceneManagement;
 
 
 
 public class Authentication : MonoBehaviour
 {
-   
+    private List<string> keys;
     public async void Login()
     {
         await UnityServices.InitializeAsync();
         Debug.Log(UnityServices.State);
-        
         SetupEvents();
         await SignInAnonymouslyAsync();
+        keys = await CloudSaveService.Instance.Data.RetrieveAllKeysAsync();
+        keys.ForEach(k => Debug.Log($"Keys in CloudSave {k}"));
         //CreateLobby();
     }
 
@@ -27,7 +31,6 @@ public class Authentication : MonoBehaviour
 
             // Shows how to get an access token
             Debug.Log($"Access Token: {AuthenticationService.Instance.AccessToken}");
-
         };
 
         AuthenticationService.Instance.SignInFailed += (err) => {
@@ -53,7 +56,7 @@ public class Authentication : MonoBehaviour
         
             // Shows how to get the playerID
             Debug.Log($"PlayerID: {AuthenticationService.Instance.PlayerId}");
-            SceneManager.LoadScene("Sandbox");
+            //SceneManager.LoadScene("Sandbox");
 
         }
         catch (AuthenticationException ex)
